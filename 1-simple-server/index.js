@@ -5,9 +5,18 @@ const typeDefs = gql`
     id: Int!
     name: String!
   }
+  type User {
+    id: Int!
+    name: String!
+  }
   type Query {
     beers: [Beer!]!
     beer: Beer
+    users: [User!]!
+    user(id: Int!): User
+  }
+  type Mutation {
+    addUser(name: String!): User!
   }
 `;
 
@@ -22,10 +31,30 @@ const beers = [
   }
 ];
 
+const users = [
+  {
+    id: 1,
+    name: "John Doe"
+  }
+];
+
+let nextId = 2;
+
 const resolvers = {
   Query: {
     beers: () => beers,
-    beer: (_, { id }) => beers.find(beer => beer.id === id)
+    beer: (_, { id }) => beers.find(beer => beer.id === id),
+    users: () => users,
+    user: (_, { id }) => users.find(user => user.id === id)
+  },
+  Mutation: {
+    addUser: (_, { name }) => {
+      const index = users.push({
+        id: nextId++,
+        name
+      });
+      return users[index - 1];
+    }
   }
 };
 
