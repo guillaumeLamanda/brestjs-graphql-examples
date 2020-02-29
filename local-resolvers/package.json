@@ -1,0 +1,15 @@
+{
+  "name": "local-resolvers",
+  "version": "1.0.0",
+  "description": "Simple implementation of apollo-server with local resolvers",
+  "main": "index.mjs",
+  "author": "Guillaume Lamanda <guillaume.lamanda@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "apollo-server": "^2.10.1",
+    "graphql": "^14.6.0"
+  }
+}
