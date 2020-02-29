@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:11.5
+    container_name: bjs_postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: bjs-graphql
+      POSTGRES_PASSWORD: bjs-graphql
+      POSTGRES_DB: bjs-graphql
+
+  adminer:
+    image: adminer
+    container_name: bjs_adminer
+    ports:
+      - 8080:8080
