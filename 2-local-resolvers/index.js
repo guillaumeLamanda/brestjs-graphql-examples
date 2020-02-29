@@ -1,4 +1,5 @@
-const { ApolloServer, gql } = require("apollo-server");
+const { ApolloServer, gql, ApolloError } = require("apollo-server");
+const status = require("http-status");
 
 const typeDefs = gql`
   type Beer {
@@ -18,6 +19,8 @@ const typeDefs = gql`
   }
   type Mutation {
     addUser(name: String!): User!
+    likeBeer(userId: Int!, beerId: Int!): User!
+    unlikeBeer(userId: Int!, beerId: Int!): User!
   }
 `;
 
@@ -57,9 +60,37 @@ const resolvers = {
     addUser: (_, { name }) => {
       const index = users.push({
         id: nextId++,
-        name
+        name,
+        beers: []
       });
       return users[index - 1];
+    },
+    likeBeer: (_, { userId, beerId }) => {
+      const user = users.find(({ id }) => id === userId);
+      if (!user) throw new ApolloError("User not found", status.NOT_FOUND);
+      if (user.beers.some(id => id === beerId))
+        throw new ApolloError(
+          "Beer already liked",
+          status.UNPROCESSABLE_ENTITY
+        );
+      if (!beers.some(({ id }) => id === beerId))
+        throw new ApolloError(
+          "This beer does not exist",
+          status.UNPROCESSABLE_ENTITY
+        );
+      user.beers.push(beerId);
+      return user;
+    },
+    unlikeBeer: (_, { userId, beerId }) => {
+      const user = users.find(({ id }) => id === userId);
+      if (!user) throw new ApolloError("User not found", status.NOT_FOUND);
+      if (!user.beers.some(id => id === beerId))
+        throw new ApolloError(
+          "Beer already liked",
+          status.UNPROCESSABLE_ENTITY
+        );
+      user.beers = user.beers.filter(id => id === beerId);
+      return user;
     }
   }
 };

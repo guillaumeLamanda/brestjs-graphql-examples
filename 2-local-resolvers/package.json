@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "apollo-server": "^2.10.1",
-    "graphql": "^14.6.0"
+    "graphql": "^14.6.0",
+    "http-status": "^1.4.2"
   }
 }
