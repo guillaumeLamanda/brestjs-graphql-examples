@@ -16,6 +16,9 @@ const typeDefs = gql`
     users: [User!]!
     user(id: Int!): User
   }
+  type Mutation {
+    addUser(name: String!): User!
+  }
 `;
 
 const beers = [
@@ -37,6 +40,8 @@ const users = [
   }
 ];
 
+let nextId = 2;
+
 const resolvers = {
   User: {
     beers: ({ beers: userBeersIds }) =>
@@ -47,6 +52,15 @@ const resolvers = {
     beer: (_, { id }) => beers.find(beer => beer.id === id),
     users: () => users,
     user: (_, { id }) => users.find(user => user.id === id)
+  },
+  Mutation: {
+    addUser: (_, { name }) => {
+      const index = users.push({
+        id: nextId++,
+        name
+      });
+      return users[index - 1];
+    }
   }
 };
 

@@ -11,6 +11,10 @@ const beerTypeDefs = gql`
     users: [User!]!
     user(id: Int!): User
   }
+
+  extend type Mutation {
+    addUser(name: String!): User!
+  }
 `;
 
 module.exports = beerTypeDefs;

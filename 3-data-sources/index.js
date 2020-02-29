@@ -4,6 +4,7 @@ const { userTypeDefs, userResolvers } = require("./users");
 
 const typeDefs = gql`
   type Query
+  type Mutation
 `;
 
 const server = new ApolloServer({
