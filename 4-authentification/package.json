@@ -1,0 +1,21 @@
+{
+  "name": "data-sources",
+  "version": "1.0.0",
+  "description": "Simple implementation of apollo-server with data-sources",
+  "main": "index.js",
+  "author": "Guillaume Lamanda <guillaume.lamanda@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "apollo-datasource-rest": "^0.7.0",
+    "apollo-server": "^2.10.1",
+    "graphql": "^14.6.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
