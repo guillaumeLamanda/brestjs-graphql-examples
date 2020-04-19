@@ -1,0 +1,21 @@
+type User {
+  id: Int!
+  name: String!
+  beers: [Beer!]!
+}
+
+type Beer {
+  id: Int!
+  name: String!
+}
+
+type Query {
+  users: [User!]!
+  user(id: Int!): User
+  beers: [Beer!]!
+  beer(id: Int!): Beer
+}
+
+type Mutation {
+  addUser(name: String!): User!
+}
