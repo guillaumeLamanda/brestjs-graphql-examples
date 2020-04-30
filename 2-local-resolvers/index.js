@@ -13,7 +13,7 @@ const typeDefs = gql`
   }
   type Query {
     beers: [Beer!]!
-    beer: Beer
+    beer(id: String!): Beer
     users: [User!]!
     user(id: Int!): User
   }
@@ -27,20 +27,20 @@ const typeDefs = gql`
 const beers = [
   {
     id: 1,
-    name: "Baril white"
+    name: "Baril white",
   },
   {
     id: 2,
-    name: "Pelforte"
-  }
+    name: "Pelforte",
+  },
 ];
 
 const users = [
   {
     id: 1,
     name: "John Doe",
-    beers: [2]
-  }
+    beers: [2],
+  },
 ];
 
 let nextId = 2;
@@ -48,27 +48,27 @@ let nextId = 2;
 const resolvers = {
   User: {
     beers: ({ beers: userBeersIds }) =>
-      userBeersIds.map(id => beers.find(({ id: beerId }) => beerId === id))
+      userBeersIds.map((id) => beers.find(({ id: beerId }) => beerId === id)),
   },
   Query: {
     beers: () => beers,
-    beer: (_, { id }) => beers.find(beer => beer.id === id),
+    beer: (_, { id }) => beers.find((beer) => beer.id === id),
     users: () => users,
-    user: (_, { id }) => users.find(user => user.id === id)
+    user: (_, { id }) => users.find((user) => user.id === id),
   },
   Mutation: {
     addUser: (_, { name }) => {
       const index = users.push({
         id: nextId++,
         name,
-        beers: []
+        beers: [],
       });
       return users[index - 1];
     },
     likeBeer: (_, { userId, beerId }) => {
       const user = users.find(({ id }) => id === userId);
       if (!user) throw new ApolloError("User not found", status.NOT_FOUND);
-      if (user.beers.some(id => id === beerId))
+      if (user.beers.some((id) => id === beerId))
         throw new ApolloError(
           "Beer already liked",
           status.UNPROCESSABLE_ENTITY
@@ -84,20 +84,20 @@ const resolvers = {
     unlikeBeer: (_, { userId, beerId }) => {
       const user = users.find(({ id }) => id === userId);
       if (!user) throw new ApolloError("User not found", status.NOT_FOUND);
-      if (!user.beers.some(id => id === beerId))
+      if (!user.beers.some((id) => id === beerId))
         throw new ApolloError(
           "Beer already liked",
           status.UNPROCESSABLE_ENTITY
         );
-      user.beers = user.beers.filter(id => id === beerId);
+      user.beers = user.beers.filter((id) => id === beerId);
       return user;
-    }
-  }
+    },
+  },
 };
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
 });
 
 server.listen(5000).then(({ url }) => {

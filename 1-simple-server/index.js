@@ -11,9 +11,9 @@ const typeDefs = gql`
   }
   type Query {
     beers: [Beer!]!
-    beer: Beer
+    beer(id: ID!): Beer
     users: [User!]!
-    user(id: Int!): User
+    user(id: ID!): User
   }
   type Mutation {
     addUser(name: String!): User!
@@ -23,19 +23,19 @@ const typeDefs = gql`
 const beers = [
   {
     id: 1,
-    name: "Baril white"
+    name: "Baril white",
   },
   {
     id: 2,
-    name: "Pelforte"
-  }
+    name: "Pelforte",
+  },
 ];
 
 const users = [
   {
     id: 1,
-    name: "John Doe"
-  }
+    name: "John Doe",
+  },
 ];
 
 let nextId = 2;
@@ -43,24 +43,24 @@ let nextId = 2;
 const resolvers = {
   Query: {
     beers: () => beers,
-    beer: (_, { id }) => beers.find(beer => beer.id === id),
+    beer: (_, { id }) => beers.find((beer) => beer.id === id),
     users: () => users,
-    user: (_, { id }) => users.find(user => user.id === id)
+    user: (_, { id }) => users.find((user) => user.id === id),
   },
   Mutation: {
     addUser: (_, { name }) => {
       const index = users.push({
         id: nextId++,
-        name
+        name,
       });
       return users[index - 1];
-    }
-  }
+    },
+  },
 };
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
 });
 
 server.listen(5000).then(({ url }) => {

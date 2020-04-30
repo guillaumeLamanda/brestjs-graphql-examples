@@ -8,7 +8,7 @@ const beerTypeDefs = gql`
 
   extend type Query {
     beers(page: Int, pageSize: Int): [Beer!]!
-    beer(id: Int!): Beer
+    beer(id: ID!): Beer
   }
 `;
 
